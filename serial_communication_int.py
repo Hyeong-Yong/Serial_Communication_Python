@@ -17,26 +17,19 @@ py_serial = serial.Serial(
 if (py_serial.is_open == False):
     py_serial.open()
 
-viscosity_value = 221155.52
-viscosity_value = np.array(viscosity_value, dtype = np.float32)
-viscosity_value = bytes(viscosity_value)
-#byte_1= str(viscosity_value[0]).encode()
-#byte_2= str(viscosity_value[1]).encode()
-#byte_3= str(viscosity_value[2]).encode()
-#byte_4= str(viscosity_value[3]).encode()
+viscosity_value = 22115
 
-byte_1= viscosity_value[0]
-byte_2= viscosity_value[1]
-byte_3= viscosity_value[2]
-byte_4= viscosity_value[3]
+byte_1= viscosity_value     & 0x000000ff
+byte_2= viscosity_value>>8  & 0x000000ff
+byte_3= viscosity_value>>16 & 0x000000ff
+byte_4= viscosity_value>>24 & 0x000000ff
 
-print(type(byte_1))
-print(bytes(byte_1), byte_2, byte_3, byte_4)
-py_serial.write(bytes(byte_1))
-py_serial.write(bytes(byte_2))
-py_serial.write(bytes(byte_3))
-py_serial.write(bytes(byte_4))
-
+py_serial.write(bytes(byte_1.to_bytes(1, byteorder="little")))
+py_serial.write(bytes(byte_2.to_bytes(1, byteorder="little")))
+py_serial.write(bytes(byte_3.to_bytes(1, byteorder="little")))
+py_serial.write(bytes(byte_4.to_bytes(1, byteorder="little")))
+print(byte_1)
+print(byte_1.to_bytes(1, byteorder="little"))
 
 py_serial.close()
 
