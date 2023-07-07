@@ -1,12 +1,12 @@
 import serial # conda install serial
-import time
-import struct
-import numpy as np
+
 #              python     C 
 # int          4byte    4byte
 # float        8byte    4byte
-# np.float32   4byte    4byte    
+# INT로 전송해서 나누기
 
+
+############################## START 초기화 코드  ########################################
 py_serial = serial.Serial(
     # Window
     port='COM4',
@@ -16,7 +16,11 @@ py_serial = serial.Serial(
 
 if (py_serial.is_open == False):
     py_serial.open()
+############################## END 초기화 코드  ####################################
 
+
+
+############################## START 점도센서값 전송(PC to MCU) ##################################
 viscosity_value = 22115
 
 byte_1= viscosity_value     & 0x000000ff
@@ -30,23 +34,22 @@ py_serial.write(bytes(byte_3.to_bytes(1, byteorder="little")))
 py_serial.write(bytes(byte_4.to_bytes(1, byteorder="little")))
 print(byte_1)
 print(byte_1.to_bytes(1, byteorder="little"))
+############################# END 점도센서값 전송(PC to MCU) ####################
+
+
+
+######################### START 온도센서값 전송(MCU to PC)######################
+
+
+
+######################### END 온도센서값 전송(MCU to PC)########################
+while True:
+    
+    
+
+############################# START 프로그램 종료 ############################
 
 py_serial.close()
 
-#while False:
-    #byte_arr = bytearray(struct.pack("f", value))
-    #byte_list = [b for b in byte_arr]
-    #print(type(byte_list))
-    #ser.write(bytes(byte_list[0]))
-   # ser.write(bytes(byte_list[1]))
+############################# END 프로그램 종료 ##############################
 
-#    time.sleep(0.1)
-    
- #   if py_serial.readable():
-        
-        # 들어온 값이 있으면 값을 한 줄 읽음 (BYTE 단위로 받은 상태)
-        # BYTE 단위로 받은 response 모습 : b'\xec\x97\x86\xec\x9d\x8c\r\n'
-#        response = py_serial.readline()
-        
-        # 디코딩 후, 출력 (가장 끝의 \n을 없애주기위해 슬라이싱 사용)
- #       print(response[:len(response)-1].decode())
